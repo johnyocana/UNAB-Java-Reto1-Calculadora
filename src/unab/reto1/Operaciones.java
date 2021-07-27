@@ -62,11 +62,7 @@ public class Operaciones {
             do {
                 System.out.print("Operacion a realizar (+) (-) (*) (/): ");
                 tipo = lee.next();
-                if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo)) {
-                    operador = false;
-                } else {
-                    operador = true;
-                }
+                operador = !("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo));
             } while (operador == true);
             int num2 = capturaNumerosP("Ingrese segundo numero: ");
             System.out.println(num1 + " " + tipo + " " + num2 + " = " + operaDatos(num1, num2, tipo));
@@ -104,12 +100,16 @@ public class Operaciones {
                 System.out.print("Operacion a realizar (+) (-) (*) (/) (R -> Raiz) (P -> Potencia): ");
                 tipo = lee.next().toUpperCase();
                 if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo) || "R".equals(tipo) || "P".equals(tipo)) {
-                    if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo)) {
-                        num2 = capturaNumerosPN("Ingrese segundo numero: ");
-                    } else if ("R".equals(tipo)) {
-                        num2 = capturaNumerosPN("Ingrese raiz: ");
-                    } else if ("P".equals(tipo)) {
-                        num2 = capturaNumerosPN("Ingrese potencia: ");
+                    switch (tipo){
+                        case "R":
+                            num2 = capturaNumerosPN("Ingrese raiz: ");
+                            break;
+                        case "P":
+                            num2 = capturaNumerosPN("Ingrese potencia: ");
+                            break;
+                        default:
+                            num2 = capturaNumerosPN("Ingrese segundo numero: ");
+                            break;
                     }
                     operador = false;
                 }
@@ -121,6 +121,7 @@ public class Operaciones {
         limpiar();
         menu();
     }
+    
 
     public double capturaNumerosPN(String mensaje) {
         do {
