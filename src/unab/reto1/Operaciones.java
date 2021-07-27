@@ -36,6 +36,7 @@ public class Operaciones {
                             leeNumerosPN();
                             break;
                         case 3:
+                            limpiar();
                             System.out.println("Programa finalizado.");
                             continuar = 'N';
                             break;
@@ -63,6 +64,8 @@ public class Operaciones {
                 tipo = lee.next();
                 if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo)) {
                     operador = false;
+                } else {
+                    operador = true;
                 }
             } while (operador == true);
             int num2 = capturaNumerosP("Ingrese segundo numero: ");
@@ -91,31 +94,30 @@ public class Operaciones {
     }
 
     public void leeNumerosPN() {
-        do  {
+        do {
             limpiar();
             System.out.println("OPERACIONES NEGATIVOS Y/O POSITIVOS \n(Suma - Resta - Division - Multiplicacion - Raiz - Potencia).");
-            double num1 = capturaNumerosPN("Ingrese el primer numero: ");
+            double num1 = capturaNumerosPN("Ingrese primer numero: ");
             String tipo;
             do {
+                operador = true;
                 System.out.print("Operacion a realizar (+) (-) (*) (/) (R -> Raiz) (P -> Potencia): ");
                 tipo = lee.next().toUpperCase();
-                               
-                if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo) || "R".equals(tipo) || "P".equals(tipo)){
-                    if("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo)){
-                        num2 = capturaNumerosPN("Ingrese el segundo numero: ");
-                    }else if("R".equals(tipo)){
-                        num2 = capturaNumerosPN("Ingrese la raiz: ");
-                    }else if("P".equals(tipo)){
-                        num2 = capturaNumerosPN("Ingrese la potencia: ");
+                if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo) || "R".equals(tipo) || "P".equals(tipo)) {
+                    if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo)) {
+                        num2 = capturaNumerosPN("Ingrese segundo numero: ");
+                    } else if ("R".equals(tipo)) {
+                        num2 = capturaNumerosPN("Ingrese raiz: ");
+                    } else if ("P".equals(tipo)) {
+                        num2 = capturaNumerosPN("Ingrese potencia: ");
                     }
                     operador = false;
                 }
             } while (operador == true);
-            
             System.out.println(num1 + " " + tipo + " " + num2 + " = " + operaDatos(num1, num2, tipo));
             System.out.print("Otra operacion (Si / No) : ");
             continuar = lee.next().toUpperCase().charAt(0);
-        }while (continuar == 'S');
+        } while (continuar == 'S');
         limpiar();
         menu();
     }
@@ -133,6 +135,7 @@ public class Operaciones {
                     numPN = null;
                 }
             } while (numPN == null);
+            confirmacion = false;
             return numPN;
         } while (confirmacion == true);
     }
