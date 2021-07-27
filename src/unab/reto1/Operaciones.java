@@ -1,57 +1,62 @@
 package unab.reto1;
 
-import java.util.Objects;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Operaciones {
 
     int opcion, num;
-    float numP, resultadoP;
-    double numPN, resultadoPN, numPN2;
+    double resultado, num2;
     char continuar = 'S';
     boolean operador = true;
+    boolean confirmacion = true;
     Scanner lee = new Scanner(System.in);
 
     public void limpiar() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 25; i++) {
             System.out.println();
         }
     }
 
     public void menu() {
-        continuar = 'S';
-        while (continuar == 'S') {
+        do {
             System.out.println("--- MENU PRINCIPAL ---");
-            System.out.println("1. Operaciones solo con numeros positivos (Suma - Resta - Division - Multiplicacion).");
-            System.out.println("2. Operaciones con numeros positivos y negativos. (Suma - Resta - Division - Multiplicacion - Raiz - Potencia).");
+            System.out.println("1. Operaciones enteros positivos (Suma - Resta - Division - Multiplicacion).");
+            System.out.println("2. Operaciones numeros positivos y negativos. (Suma - Resta - Division - Multiplicacion - Raiz - Potencia).");
             System.out.println("3. Salir.");
             System.out.print("Ingrese la opcion: ");
-            opcion = lee.nextInt();
-            if (opcion >= 1 && opcion <= 3) {
-                switch (opcion) {
-                    case 1:
-                        limpiar();
-                        leeNumerosP();
-                        break;
-                    case 2:
-                        limpiar();
-                        leeNumerosPN();
-                        break;
-                    case 3:
-                        continuar = 'N';
-                        break;
+            try {
+                opcion = lee.nextInt();
+                if (opcion >= 1 && opcion <= 3) {
+                    switch (opcion) {
+                        case 1:
+                            leeNumerosP();
+                            break;
+                        case 2:
+                            leeNumerosPN();
+                            break;
+                        case 3:
+                            System.out.println("Programa finalizado.");
+                            continuar = 'N';
+                            break;
+                    }
+                } else {
+                    limpiar();
+                    System.out.println("\n!!! Opcion no existe, cargando el menu ¡¡¡\n");
                 }
-            } else {
-                System.out.println("\nOPCION NO VALIDA - CARGANDO DE NUEVO EL MENU.\n");
+            } catch (InputMismatchException e) {
                 limpiar();
-                menu();
+                System.out.println("\n!!! Opcion errada, cargando el menu ¡¡¡\n");
+                lee = new Scanner(System.in);
             }
-        }
+        } while (continuar == 'S');
     }
 
     public void leeNumerosP() {
-        while (continuar == 'S') {
-            float numP1 = capturaNumerosP("Ingrese el primer numero: ");
+        do {
+            limpiar();
+            System.out.println("OPERACIONES ENTEROS POSITIVOS \n(Suma - Resta - Division - Multiplicacion).");
+            int num1 = capturaNumerosP("Ingrese primer numero: ");
             String tipo;
             do {
                 System.out.print("Operacion a realizar (+) (-) (*) (/): ");
@@ -60,40 +65,36 @@ public class Operaciones {
                     operador = false;
                 }
             } while (operador == true);
-            float numP2 = capturaNumerosP("Ingrese el segundo numero: ");
-            System.out.println(numP1 + " " + tipo + " " + numP2 + " = " + operaDatosP(numP1, numP2, tipo));
-            System.out.print("Desea realizar otra operacion Si o No: ");
+            int num2 = capturaNumerosP("Ingrese segundo numero: ");
+            System.out.println(num1 + " " + tipo + " " + num2 + " = " + operaDatos(num1, num2, tipo));
+            System.out.print("Otra operacion (Si / No) : ");
             continuar = lee.next().toUpperCase().charAt(0);
-        }
+        } while (continuar == 'S');
         limpiar();
         menu();
     }
 
-    public float capturaNumerosP(String mensaje) {
+    public int capturaNumerosP(String mensaje) {
         do {
-            System.out.print(mensaje);
-            numP = lee.nextFloat();
-        } while (numP < 0);
-        return numP;
-    }
-
-    public float operaDatosP(float numP1, float numP2, String tipo) {
-        switch (tipo) {
-            case "+":
-                return resultadoP = numP1 + numP2;
-            case "-":
-                return resultadoP = numP1 - numP2;
-            case "*":
-                return resultadoP = numP1 * numP2;
-            case "/":
-                return resultadoP = numP1 / numP2;
-        }
-        return resultadoP;
+            num = -1;
+            do {
+                try {
+                    System.out.print(mensaje);
+                    num = lee.nextInt();
+                } catch (InputMismatchException f) {
+                    lee = new Scanner(System.in);
+                }
+            } while (num < 0);
+            confirmacion = false;
+            return num;
+        } while (confirmacion == true);
     }
 
     public void leeNumerosPN() {
-        while (continuar == 'S') {
-            double numPN1 = capturaNumerosPN("Ingrese el primer numero: ");
+        do  {
+            limpiar();
+            System.out.println("OPERACIONES NEGATIVOS Y/O POSITIVOS \n(Suma - Resta - Division - Multiplicacion - Raiz - Potencia).");
+            double num1 = capturaNumerosPN("Ingrese el primer numero: ");
             String tipo;
             do {
                 System.out.print("Operacion a realizar (+) (-) (*) (/) (R -> Raiz) (P -> Potencia): ");
@@ -101,55 +102,56 @@ public class Operaciones {
                                
                 if ("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo) || "R".equals(tipo) || "P".equals(tipo)){
                     if("+".equals(tipo) || "-".equals(tipo) || "*".equals(tipo) || "/".equals(tipo)){
-                        numPN2 = capturaNumerosPN("Ingrese el segundo numero: ");
+                        num2 = capturaNumerosPN("Ingrese el segundo numero: ");
                     }else if("R".equals(tipo)){
-                        numPN2 = capturaNumerosPN("Ingrese la raiz: ");
+                        num2 = capturaNumerosPN("Ingrese la raiz: ");
                     }else if("P".equals(tipo)){
-                        numPN2 = capturaNumerosPN("Ingrese la potencia: ");
+                        num2 = capturaNumerosPN("Ingrese la potencia: ");
                     }
                     operador = false;
                 }
             } while (operador == true);
             
-            System.out.println(numPN1 + " " + tipo + " " + numPN2 + " = " + operaDatosPN(numPN1, numPN2, tipo));
-            System.out.print("Desea realizar otra operacion Si o No: ");
+            System.out.println(num1 + " " + tipo + " " + num2 + " = " + operaDatos(num1, num2, tipo));
+            System.out.print("Otra operacion (Si / No) : ");
             continuar = lee.next().toUpperCase().charAt(0);
-        }
+        }while (continuar == 'S');
         limpiar();
         menu();
     }
 
     public double capturaNumerosPN(String mensaje) {
-        Double numPN = null;
-        String valorLeido;
         do {
-            System.out.print(mensaje);
-            try {
-                valorLeido = lee.next();
-                numPN = Double.parseDouble(valorLeido);
-
-            } catch (NumberFormatException error) {
-                numPN = null;
-            }
-        } while (numPN == null);
-        return numPN;
+            Double numPN = null;
+            String valorLeido;
+            do {
+                System.out.print(mensaje);
+                try {
+                    valorLeido = lee.next();
+                    numPN = Double.parseDouble(valorLeido);
+                } catch (NumberFormatException error) {
+                    numPN = null;
+                }
+            } while (numPN == null);
+            return numPN;
+        } while (confirmacion == true);
     }
 
-    public double operaDatosPN(double numPN1, double numPN2, String tipo) {
+    public double operaDatos(double num1, double num2, String tipo) {
         switch (tipo) {
             case "+":
-                return resultadoPN = numPN1 + numPN2;
+                return resultado = num1 + num2;
             case "-":
-                return resultadoPN = numPN1 - numPN2;
+                return resultado = num1 - num2;
             case "*":
-                return resultadoPN = numPN1 * numPN2;
+                return resultado = num1 * num2;
             case "/":
-                return resultadoPN = numPN1 / numPN2;
+                return resultado = num1 / num2;
             case "R":
-                return resultadoPN = Math.pow(numPN1, (double) 1 / numPN2);
+                return resultado = Math.pow(num1, (double) 1 / num2);
             case "P":
-                return resultadoPN = Math.pow(numPN1, numPN2);
+                return resultado = Math.pow(num1, num2);
         }
-        return resultadoP;
+        return resultado;
     }
 }
